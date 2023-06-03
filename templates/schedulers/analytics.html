@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container-lg">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h2><b>Events - Time Tracker</b></h2></div>
+
+                </div>
+            </div>
+            <table class="table table-bordered">
+  <thead>
+    <tr>
+
+      <th class="w-50" scope="col">Date</th>
+      <th class="w-50" scope="col">Time in hours</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for event in output %}
+    <tr>
+      <td>{{ event.day }}</td>
+      <td>{{ event.hours }}</td>
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+</table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

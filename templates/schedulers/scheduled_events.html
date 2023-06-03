@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container-lg">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h2><b> Scheduled Events </b></h2></div>
+
+                </div>
+            </div>
+            <table class="table table-bordered col-md-9">
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for event in events %}
+
+                    <tr>
+                        <td>{{event.event_name}}</td>
+                        <td>{{event.start_date}}</td>
+                        <td>{{event.end_date}}</td>
+                        <td> <a href="{% url 'edit_event' event.id %}" <button type="button">Edit</button></td>
+                        <td> <a href="{% url 'delete_event' event.id %}" <button type="button">Delete</button></td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
