@@ -12,6 +12,7 @@
 
                 </div>
             </div>
+            {% if events %}
             <table class="table table-bordered col-md-9">
                 <thead>
                     <tr>
@@ -36,6 +37,10 @@
 
                 </tbody>
             </table>
+
+            {% else %}
+            <p>No events to show.</p>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -6,17 +6,19 @@ from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 class SchedulerForm(forms.ModelForm):
     class Meta:
         model = Scheduler
-        fields = ['event_name', 'start_date', 'end_date']
+        fields = [ 'user', 'event_name', 'start_date', 'end_date']
 
         widgets = {
             'event_name': forms.TextInput(attrs={'class': 'form-control'}),
             'start_date' : DateTimePickerInput(options={
-                    "format": "YYYY-MM-DD hh:mm:ss"}, attrs={'class': 'form-control datetimepicker-input', 'data-target': '#start_date_picker'}),
+                    "format": "YYYY-MM-DD hh:mm:ss"}, attrs={'class': 'form-control'}),
 
             'end_date': DateTimePickerInput(options={
-                    "format": "YYYY-MM-DD hh:mm:ss"}, attrs={'class': 'form-control datetimepicker-input', 'data-target': '#start_date_picker'}),
+                    "format": "YYYY-MM-DD hh:mm:ss"}, attrs={'class': 'form-control'}),
 
         }
+
+
 
 
 

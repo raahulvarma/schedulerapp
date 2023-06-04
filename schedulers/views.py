@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import SchedulerForm
 from .models import Scheduler
+from django.utils.timezone import now, timedelta
 
 
 # Create your views here.
@@ -10,7 +11,7 @@ from .models import Scheduler
 @login_required
 def scheduled_events(request):
     if request.method == 'GET':
-        events = Scheduler.objects.all().values()
+        events = Scheduler.objects.filter(user=request.user).values()
         context = {
             'events' : events,
         }
@@ -49,15 +50,15 @@ def edit_event(request, pk):
 # Update the selected event with the new details
 @login_required
 def update_event(request, pk):
-    event = Scheduler.objects.all().filter(pk=pk)
+    event = Scheduler.objects.all().filter(user=request.user, pk=pk)
     print(request.POST)
-    if request.method == 'POST':
-
-        data = request.POST
+    data = request.POST
+    if request.method == 'POST' and (data.get('start_date') <= data.get('end_date') ):
+        event.update(user=data.get('user'))
         event.update(event_name = data.get('event_name'))
         event.update(start_date = data.get('start_date'))
         event.update(end_date = data.get('end_date'))
-        #event.save()
+
         return redirect('scheduled_events')
     else:
         events = Scheduler.objects.all().values()
@@ -72,7 +73,11 @@ def update_event(request, pk):
 # Delete the selected event from the database
 @login_required
 def delete_event(request, pk):
+
+    # Fetch the relevant data from the model
     event = get_object_or_404(Scheduler, pk=pk)
+
+    # Delete the selected event from the database
     if request.method == 'GET':
         event.delete()
         return redirect('scheduled_events')
@@ -84,26 +89,25 @@ def delete_event(request, pk):
 
 @login_required
 def analytics(request):
-    records = Scheduler.objects.all()
-    total_time_per_day = {}
+    end_date = now().date()
+    start_date = end_date - timedelta(days=30)
 
-    for record in records:
-        start_date = record.start_date.date()
-        end_date = record.end_date.date()
+    # Fetch the relevant data from the model
+    data = Scheduler.objects.filter(user=request.user, start_date__gte=start_date)
 
-        # Calculate the time difference
-        time_difference = record.end_date - record.start_date
-        hours = time_difference.total_seconds() / 3600  # Convert to hours
-
-        # Update the total time for the day
-        if start_date not in total_time_per_day:
-            total_time_per_day[start_date] = hours
+    # Calculate teh hours for that day
+    results = {}
+    for entry in data:
+        day = entry.start_date.date()
+        duration = entry.end_date - entry.start_date
+        hours = duration.total_seconds() / 3600  # Convert to hours
+        if day in results:
+            results[day] += hours
         else:
-            total_time_per_day[start_date] += hours
-
+            results[day] = hours
     # Convert the Dictionary into List
     output = []
-    for date, hours in total_time_per_day.items():
+    for date, hours in results.items():
         output.append({
             'day': date.strftime("%B %d, %Y"),
             'hours': round(hours,2)

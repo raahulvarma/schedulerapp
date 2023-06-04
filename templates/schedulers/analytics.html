@@ -12,6 +12,7 @@
 
                 </div>
             </div>
+            {% if output %}
             <table class="table table-bordered">
   <thead>
     <tr>
@@ -21,6 +22,8 @@
     </tr>
   </thead>
   <tbody>
+
+
   {% for event in output %}
     <tr>
       <td>{{ event.day }}</td>
@@ -29,8 +32,17 @@
   {% endfor %}
 
 
+
+
   </tbody>
+
+
+
+
 </table>
+            {% else %}
+            <p class="text-align">No events to show.</p>
+            {% endif %}
         </div>
     </div>
 </div>

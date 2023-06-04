@@ -1,8 +1,10 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
 
 class Scheduler(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     event_name = models.CharField(max_length=100, unique=True)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
@@ -15,5 +17,3 @@ class Scheduler(models.Model):
             raise ValidationError("End Date must be greater than Start Date")
 
 
-    def __str__(self):
-        return {'event_name' : self.event_name}
