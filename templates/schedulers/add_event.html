@@ -25,7 +25,9 @@
 
    {% csrf_token %}
    {{ form.as_p }}
-   <button type="submit">Submit</button>
+
+   <button type="submit">Submit</button>&nbsp;&nbsp;&nbsp;
+    <a href = "{% url 'scheduled_events' %}"> Cancel</a>
 
 </form>
 </div>

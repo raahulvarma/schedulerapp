@@ -10,6 +10,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3>Edit Event </h3>
+                        <h4>Event {{ event.event_name }} under the user {{ event.user }}</h4>
                     </div>
                     <div class="card-body">
                         {% if messages %}
@@ -26,7 +27,8 @@
                 <form method="post" action="{% url 'update_event' pk %}" >
                         {% csrf_token %}
                         {{ form.as_p }}
-                    <button type="submit">Submit</button>
+                    <button type="submit">Submit</button>&nbsp;&nbsp;&nbsp;
+    <a href = "{% url 'scheduled_events' %}"> Cancel</a>
                     </form>
 </div>
                 </div>

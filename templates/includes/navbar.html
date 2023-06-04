@@ -8,6 +8,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+                    {% if events or output or event %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'add_event' %}">Add Event</a>
                     </li>
@@ -17,9 +18,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'analytics' %}">Event Analytics</a>
                     </li>
+                     <li class="nav-item">
+                    <a class="nav-link" href="#">Logged in as {{ user }} </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                     </li>
+
+
+                    {% endif %}
+
                 </ul>
             </div>
         </div>

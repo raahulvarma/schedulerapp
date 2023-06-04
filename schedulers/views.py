@@ -14,6 +14,7 @@ def scheduled_events(request):
         events = Scheduler.objects.filter(user=request.user).values()
         context = {
             'events' : events,
+            'user' : str(request.user).title()
         }
     return render(request, "schedulers/scheduled_events.html", context)
 
@@ -41,6 +42,7 @@ def edit_event(request, pk):
         context = {
                 'pk' : pk,
                 'form' : form,
+                'event' : event.event_name
 
             }
         return render(request, 'schedulers/update_event.html', context)
