@@ -40,14 +40,14 @@ def add_event(request):
                     else:
                         messages.error(request, 'Event already exists with same start date and end date')
                         form = SchedulerForm()
-                        return render(request, 'schedulers/add_event.html', {'form' : form, "msg": msg})
+                        return render(request, 'schedulers/add_event.html', {'form' : form, "msg": msg, 'events' : events})
             else:
                 form.save()
 
             return redirect('scheduled_events')
     else:
         form = SchedulerForm()
-    return render(request, 'schedulers/add_event.html', {'form' : form})
+    return render(request, 'schedulers/add_event.html', {'form' : form, 'events' : events})
 
 
 # Select the event to edit
