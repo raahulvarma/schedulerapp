@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import SchedulerForm
 from .models import Scheduler
 from django.utils.timezone import now, timedelta
+from django.contrib import messages
+from datetime import datetime
 
 
 # Create your views here.
@@ -22,10 +24,26 @@ def scheduled_events(request):
 # Add the event to the database
 @login_required
 def add_event(request):
+    msg = None
+    events = Scheduler.objects.all()
     if request.method == 'POST':
         form = SchedulerForm(request.POST)
         if form.is_valid():
-            form.save()
+            data = request.POST
+            #print(data)
+            events = Scheduler.objects.filter(start_date=data['start_date'])
+            if events:
+                for event in events:
+                    if not ((str(event.start_date.strftime("%Y-%m-%d %H:%M:%S")) == data['start_date']) and (str(event.end_date.strftime("%Y-%m-%d %H:%M:%S")) == data['end_date'])):
+                        print(type(data['start_date']), type(str(event.start_date.strftime("%Y-%m-%d %H:%M:%S"))))
+                        form.save()
+                    else:
+                        messages.error(request, 'Event already exists with same start date and end date')
+                        form = SchedulerForm()
+                        return render(request, 'schedulers/add_event.html', {'form' : form, "msg": msg})
+            else:
+                form.save()
+
             return redirect('scheduled_events')
     else:
         form = SchedulerForm()
@@ -42,7 +60,7 @@ def edit_event(request, pk):
         context = {
                 'pk' : pk,
                 'form' : form,
-                'event' : event.event_name
+                'event' : event
 
             }
         return render(request, 'schedulers/update_event.html', context)

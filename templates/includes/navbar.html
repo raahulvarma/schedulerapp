@@ -8,7 +8,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    {% if events or output or event %}
+                    {% if events or output or event or user %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'add_event' %}">Add Event</a>
                     </li>
